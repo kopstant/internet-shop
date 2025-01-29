@@ -1,0 +1,18 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 16,
+    "fields": {
+        "category_name": "Съемные носители",
+        "description": "Обеспечат хранение информации в изолированном пространстве."
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 17,
+    "fields": {
+        "category_name": "SSD - накопители",
+        "description": "Более высокая скорость чтения и записи данных"
+    }
+}
+]
