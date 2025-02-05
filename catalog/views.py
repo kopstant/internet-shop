@@ -28,3 +28,9 @@ def contact(request):
     contact = Contact.objects.all()
 
     return render(request, 'contact.html', {'contacts': contact})
+
+
+def description(request):
+    products = Product.objects.all()
+    context = {"products": products}
+    return render(request, 'description.html', context)
