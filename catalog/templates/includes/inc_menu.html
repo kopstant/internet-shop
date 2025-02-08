@@ -17,10 +17,11 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-body-emphasis">
+            <a href="{% url 'catalog:add_product' %}"
+               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
-                Заказы
+                Добавление продуктов
             </a>
         </li>
         <li>
