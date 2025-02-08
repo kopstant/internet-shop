@@ -4,27 +4,28 @@
 
 {% block content %}
 <div class="row m-auto">
-    <div class="col-md-auto text-center">
-        <h1>Главная</h1>
-        <p>Вы находитесь на сайте предназначенном для продажи товаров.</p>
-        <div class="col-md-auto">
+    <div class="col-12 text-center">
+        <h1>Информация о продукте</h1>
+        <div class="col-12">
             <div class="row text-center">
-                {% for product in products %}
-                <div class="col-4">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             {{ product.product_name }}
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-center"></h5>
-                            <p class="card-text">10 users included, 2 GB of storage, Email support,
-                                Help center
-                                access</p>
+                            <p class="card-img"><img src="{{ product.preview.url }}" alt="{{ product.product_name }}"></p>
+                            <p class="card-text">Категория: {{product.category}}</p>
+                            <p class="card-text">Описание: {{product.description}}</p>
+                            <p class="card-text">Цена: {{product.price}} руб.</p>
+                            <p class="card-text">Создано: {{product.created_at}}</p>
+                            <p class="card-text">Отредактировано: {{product.updated_at}}</p>
                             <a href="#" class="btn btn-primary">Купить</a>
+                            <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Назад на главную</a>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>
