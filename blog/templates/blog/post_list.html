@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="row m-auto">
+    <div class="col-12 text-center">
+        <h1>Главная</h1>
+        <p>Вы находитесь на сайте, предназначенном для продажи товаров.</p>
+        <div class="col-md-auto">
+            <div class="row text-center">
+                {% for post in object_list %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ post.title }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-img"><img src="{{ post.preview.url }}" alt="{{ product.product_name }}">
+                            </p>
+                            <p class="card-text">Описание: {{ post.content|truncatechars:100 }}</p>
+                            <a href="{% url 'blog:post_detail' post.pk %}"
+                               class="btn btn-primary">Подробнее</a>
+                            <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-primary">Редактирование</a>
+                            <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-primary">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
