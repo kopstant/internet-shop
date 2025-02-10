@@ -15,6 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'category_name')
     list_filter = ('category_name',)
 
+
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'created_at')
