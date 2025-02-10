@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'catalog/base.html' %}
 
 {% block title %}Описание товара{% endblock %}
 
@@ -15,14 +15,14 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-center"></h5>
-                            <p class="card-img"><img src="{{ product.preview.url }}" alt="{{ product.product_name }}"></p>
+                            <p class="card-img"><img src="{{ product.preview.url }}" alt="{{ object.product_name }}"></p>
                             <p class="card-text">Категория: {{product.category}}</p>
                             <p class="card-text">Описание: {{product.description}}</p>
                             <p class="card-text">Цена: {{product.price}} руб.</p>
                             <p class="card-text">Создано: {{product.created_at}}</p>
                             <p class="card-text">Отредактировано: {{product.updated_at}}</p>
                             <a href="#" class="btn btn-primary">Купить</a>
-                            <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Назад на главную</a>
+                            <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Назад на главную</a>
                         </div>
                     </div>
                 </div>
