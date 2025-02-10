@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить товар{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Добавить новый товар</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.product_name.pk_for_label }}" class="form-label">Название товара</label>
+            {{ form.product_name }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Описание</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.price.id_for_label }}" class="form-label">Цена</label>
+            {{ form.price }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.category.id_for_label }}" class="form-label">Категория</label>
+            {{ form.category }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.preview.id_for_label }}" class="form-label">Изображение</label>
+            {{ form.preview }}
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить товар</button>
+    </form>
+</div>
+{% endblock %}
