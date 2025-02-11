@@ -1,5 +1,6 @@
 <nav class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <a href="{% url 'catalog:product_list' %}"
+       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <svg class="bi pe-none me-2" width="40" height="32">
             <use xlink:href="#bootstrap"></use>
         </svg>
@@ -8,7 +9,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="{% url 'catalog:home' %}"
+            <a href="{% url 'catalog:product_list' %}"
                class="nav-link link-body-emphasis {% if request.path == '/home/' %}active{% endif %}"
                aria-current="page">
                 <svg class="bi pe-none me-2" width="16" height="16">
@@ -17,7 +18,7 @@
             </a>
         </li>
         <li>
-            <a href="{% url 'catalog:add_product' %}"
+            <a href="{% url 'catalog:product_create' %}"
                class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
@@ -25,7 +26,7 @@
             </a>
         </li>
         <li>
-            <a href="{% url 'catalog:contact' %}"
+            <a href="{% url 'catalog:contact_list' %}"
                class="nav-link link-body-emphasis {% if request.path == '/contact/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>

@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Описание поста{% endblock %}
+
+{% block content %}
+<div class="row m-auto">
+    <div class="col-12 text-center">
+        <h1>Информация о посте</h1>
+        <div class="col-12">
+            <div class="row text-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ post.title }}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center"></h5>
+                            <p class="card-img"><img src="{{ post.preview.url }}" alt="{{ object.product_name }}"></p>
+                            <p class="card-text">Содержимое: {{post.content}}</p>
+                            <p class="card-text">Создано: {{post.created_at}}</p>
+                            <p class="card-text">Признак публикации: {{post.publications_flag}}</p>
+                            <p class="card-text">Количество просмотров: {{post.numbers_of_posts}}</p>
+                            <a href="#" class="btn btn-primary">Купить</a>
+                            <a href="{% url 'blog:post_list' %}" class="btn btn-secondary">Назад на главную</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
