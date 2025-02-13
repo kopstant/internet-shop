@@ -2,102 +2,43 @@
 
 {% block title %}Контакты{% endblock %}
 
-{% block extra_css %}
-<style>
-    .contact-section {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-form {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-info {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-info h5 {
-        color: #0d6efd;
-    }
-
-    .contact-info p {
-        color: #6c757d;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<h1 class="text-center mb-4">Контакты</h1>
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="contact-form">
-            <h3 class="mb-4">Свяжитесь с нами</h3>
-            <form id="contactForm" method="post" action="{% url 'catalog:contact_create' %}">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="nameInput" class="form-label">Имя</label>
-                    <input type="text" class="form-control" id="nameInput" name="name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="emailInput" class="form-label">Почта</label>
-                    <input type="email" class="form-control" id="emailInput" name="email"
-                           placeholder="name@example.com" required>
-                </div>
-                <div class="mb-3">
-                    <label for="messageInput" class="form-label">Сообщение</label>
-                    <textarea class="form-control" id="messageInput" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Отправить</button>
-            </form>
-        </div>
+<div class="container text-centern">
+    <h3>Наши контакты</h3>
+    <p>Мы всегда рады помочь вам! Свяжитесь с нами, если у вас есть вопросы или предложения.</p>
+    <div class="mb-4">
+        <h5>Мы находимся</h5>
+        <p>ул. Примерная, 123, г. Примерный, Россия</p>
     </div>
-    <div class="col-md-6">
-        <div class="contact-info">
-            <h3 class="mb-4">Наши контакты</h3>
-            <p>Мы всегда рады помочь вам! Свяжитесь с нами, если у вас есть вопросы или предложения.</p>
-            <div class="mb-4">
-                <h5>Адрес</h5>
-                <p>ул. Примерная, 123, г. Примерный, Россия</p>
-            </div>
-            <div class="mb-4">
-                <h5>Телефон</h5>
-                <p>+7 (123) 456-78-90</p>
-            </div>
-            <div class="mb-4">
-                <h5>Электронная почта</h5>
-                <p>info@example.com</p>
-            </div>
-            <div class="mb-4">
-                <h5>Часы работы</h5>
-                <p>Пн-Пт: 9:00 - 18:00</p>
-                <p>Сб-Вс: выходной</p>
-            </div>
-            <div class="mb-4">
-                <h5>История сообщений</h5>
-                {% if object_list %}
-                <ul class="list-group">
-                    {% for contact in object_list %}
-                    <li class="list-group-item">
-                        <strong>{{ contact.name }}</strong> ({{ contact.email }})<br>
-                        {{ contact.message }}<br>
-                        <small class="text-muted">{{ contact.created_at }}</small>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p class="text-muted">Сообщений пока нет.</p>
-                {% endif %}
-            </div>
-        </div>
+    <div class="mb-4">
+        <h5>Телефон</h5>
+        <p>+7 (123) 456-78-90</p>
     </div>
+    <div class="mb-4">
+        <h5>Электронная почта</h5>
+        <p>info@example.com</p>
+    </div>
+    <div class="mb-4">
+        <h5>Часы работы</h5>
+        <p>Пн-Пт: 9:00 - 18:00</p>
+        <p>Сб-Вс: выходной</p>
+    </div>
+    <div class="mb-4">
+        <h5>История сообщений</h5>
+        {% if object_list %}
+        <ul class="list-group">
+            {% for contact in object_list %}
+            <li class="list-group-item">
+                <strong>{{ contact.name }}</strong> ({{ contact.email }})<br>
+                {{ contact.message }}<br>
+                <small class="text-muted">{{ contact.created_at }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted">Сообщений пока нет.</p>
+        {% endif %}
+    </div>
+    <a href="{% url 'catalog:contact_create' %}" class="btn btn-primary">Свяжитесь с нами</a>
 </div>
 {% endblock %}
