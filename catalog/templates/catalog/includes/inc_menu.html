@@ -1,5 +1,5 @@
 <nav class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
-    <a href="{% url 'catalog:product_list' %}"
+    <a href="#"
        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <svg class="bi pe-none me-2" width="40" height="32">
             <use xlink:href="#bootstrap"></use>
@@ -23,6 +23,22 @@
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
                 Добавление продуктов
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'blog:post_list' %}"
+               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                </svg>
+                Посты
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'blog:post_create' %}"
+               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                </svg>
+                Создать новый пост
             </a>
         </li>
         <li>
