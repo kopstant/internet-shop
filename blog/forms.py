@@ -24,10 +24,9 @@ class PostForm(ModelForm):
     def clean_content(self):
         cleaned_data = super().clean()
         content = cleaned_data.get('content')
-        if len(content) > 5000:
+        if len(content) < 10 or len(content) > 5000:
             raise ValidationError('Текст вашего поста должен содержать не менее 10 и не более 5000 символов')
-        if len(content) < 5000:
-            raise ValidationError('Текст вашего поста должен содержать не менее 10 и не более 5000 символов')
+        return content
 
     def clean(self):
         cleaned_data = super().clean()
