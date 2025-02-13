@@ -1,8 +1,8 @@
+from blog.forms import PostForm
+from blog.models import Post
+from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse
-
-from blog.models import Post
 
 
 # Работает по принципу CRUD (Create(POST)-Read(GET)-Update(PUT/PATCH)-Delete(DELETE))
@@ -14,7 +14,7 @@ class PostListView(ListView):  # Отображает список объект�
 
 
 class PostDetailView(DetailView):  # Отображает детали конкретного объекта. Основной метод - get.
-    model = Post
+    model = PostForm
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
@@ -25,13 +25,13 @@ class PostDetailView(DetailView):  # Отображает детали конк�
 
 class PostCreateView(CreateView):  # Создает новый объект. Методы - get, post, form_valid.
     model = Post
-    fields = ("title", "content", "preview", "publications_flag")
+    form_class = PostForm
     success_url = reverse_lazy('blog:post_list')
 
 
 class PostUpdateView(UpdateView):  # Обновляет существующий объект. Методы - get, post, form_valid.
     model = Post
-    fields = ("title", "content", "preview", "publications_flag")
+    form_class = PostForm
     success_url = reverse_lazy('blog:post_list')
 
     def get_success_url(self):
