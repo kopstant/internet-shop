@@ -8,9 +8,10 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
+        {% if user.is_authenticated %}
         <li class="nav-item">
             <a href="{% url 'catalog:product_list' %}"
-               class="nav-link link-body-emphasis {% if request.path == '/home/' %}active{% endif %}"
+               class="nav-link link-body-emphasis {% if request.path == '/product/' %}active{% endif %}"
                aria-current="page">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
@@ -19,7 +20,7 @@
         </li>
         <li>
             <a href="{% url 'catalog:product_create' %}"
-               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
+               class="nav-link link-body-emphasis {% if request.path == '/product/create/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
                 Добавление продуктов
@@ -27,7 +28,7 @@
         </li>
         <li>
             <a href="{% url 'blog:post_list' %}"
-               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
+               class="nav-link link-body-emphasis {% if request.path == '/blogs/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
                 Посты
@@ -35,7 +36,7 @@
         </li>
         <li>
             <a href="{% url 'blog:post_create' %}"
-               class="nav-link link-body-emphasis {% if request.path == '/add_product/' %}active{% endif %}">
+               class="nav-link link-body-emphasis {% if request.path == '/blogs/create/' %}active{% endif %}">
                 <svg class="bi pe-none me-2" width="16" height="16">
                 </svg>
                 Создать новый пост
@@ -49,20 +50,50 @@
                 Контакты
             </a>
         </li>
+        <hr>
+        {% else %}
+        <li>
+            <a href="{% url 'users:login' %}"
+               class="nav-link link-body-emphasis {% if request.path == '/contact/' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                </svg>
+                Войти
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'users:register' %}"
+               class="nav-link link-body-emphasis {% if request.path == '/contact/' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                </svg>
+                Регистрация
+            </a>
+        </li>
+        {% endif %}
     </ul>
     <hr>
+    {% if user.is_authenticated %}
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/kopstant.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>kopstant</strong>
+            {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="Avatar" width="32" height="32" class="rounded-circle me-2">
+            {% else %}
+            <p>No avatar uploaded.</p>
+            {% endif %}
+            <strong>{{ user.username }}</strong>
         </a>
         <ul class="dropdown-menu text-small shadow">
             <li><a class="dropdown-item" href="#">Профиль</a></li>
             <li>
                 <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#">Выход</a></li>
+            <li>
+                <form method="post" action="{% url 'users:logout' %}" style="display: inline">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Выход</button>
+                </form>
+            </li>
         </ul>
     </div>
+    {% endif %}
 </nav>
