@@ -106,3 +106,6 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'testdmitrynadelyaev@yandex.ru'
 EMAIL_HOST_PASSWORD = 'zpgqpndpfikzdmmc'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'catalog:product_list'

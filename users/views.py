@@ -1,6 +1,8 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from .forms import CustomUserCreationForm
 
