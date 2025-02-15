@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+
 class ProductListView(ListView):
     model = Product
 
@@ -55,5 +56,24 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
+    model = Contact
+=======
+class ContactCreateView(CreateView):
+    model = Contact
+    form_class = ContactForm
+    success_url = reverse_lazy('catalog:contact_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class ContactUpdateView(UpdateView):
+    model = Contact
+    form_class = ContactForm
+    success_url = reverse_lazy('catalog:contact_list')
+
+
+class ContactDeleteView(DeleteView):
     model = Contact
     success_url = reverse_lazy('catalog:contact_list')

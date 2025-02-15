@@ -15,7 +15,7 @@ class PostListView(ListView):  # Отображает список объект�
 
 
 class PostDetailView(DetailView):  # Отображает детали конкретного объекта. Основной метод - get.
-    model = Post
+    model = PostForm
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
