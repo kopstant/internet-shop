@@ -2,40 +2,43 @@ from catalog.forms import ProductForm, ContactForm
 from catalog.models import Product, Contact
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
+class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Product
+    permission_required = 'catalog.view_product'
 
-class ProductListView(ListView):
+
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
 
-class ProductDetailView(DetailView):
-    model = Product
-
-
-class ProductCreateView(LoginRequiredMixin, CreateView):
-    model = Product
-    form_class = ProductForm
-    success_url = reverse_lazy('catalog:product_list')
-
-
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
+    permission_required = 'catalog.add_product'
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:product_list')
+    permission_required = 'catalog.change_product'
+
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+    permission_required = 'catalog.delete_product'
 
 
-class ContactListView(ListView):
+class ContactListView(LoginRequiredMixin, ListView):
     model = Contact
 
 
-class ContactDetailView(DetailView):
+class ContactDetailView(LoginRequiredMixin, DetailView):
     model = Contact
 
 
@@ -56,24 +59,5 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
-    model = Contact
-=======
-class ContactCreateView(CreateView):
-    model = Contact
-    form_class = ContactForm
-    success_url = reverse_lazy('catalog:contact_list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
-class ContactUpdateView(UpdateView):
-    model = Contact
-    form_class = ContactForm
-    success_url = reverse_lazy('catalog:contact_list')
-
-
-class ContactDeleteView(DeleteView):
     model = Contact
     success_url = reverse_lazy('catalog:contact_list')
