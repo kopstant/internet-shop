@@ -9,6 +9,9 @@ class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
     permission_required = 'catalog.view_product'
 
+    def get_queryset(self):
+        return Product.objects.filter(publications_flag=True)
+
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
