@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+from users.models import CustomUser
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -12,6 +14,9 @@ class Product(models.Model):
     created_at = models.DateField(verbose_name='дата создания', **NULLABLE)
     updated_at = models.DateField(verbose_name='дата последнего изменения', **NULLABLE, )
     publications_flag = models.BooleanField(default=False, verbose_name="Признак публикации(булевое значение)")
+    owner = models.ForeignKey(CustomUser, verbose_name='Владелец', help_text='Укажите владельца продукта',
+                              **NULLABLE,
+                              on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.product_name} {self.category} {self.price}'
@@ -24,6 +29,9 @@ class Product(models.Model):
             'category',
             'created_at',
             'updated_at',
+        )
+        permissions = (
+            ('can_unpublish_product', 'Can unpublish product'),
         )
 
 

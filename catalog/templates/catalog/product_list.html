@@ -21,8 +21,11 @@
                             <p class="card-text">Описание: {{ product.description|truncatechars:100 }}</p>
                             <a href="{% url 'catalog:product_detail' product.pk %}"
                                class="btn btn-primary">Подробнее</a>
+                            {% if user.is_authenticated and perms.catalog.can_unpublish_product and perms.catalog.delete_product %}
+                            {% csrf_token %}
                             <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-primary">Редактирование</a>
                             <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-primary">Удалить</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

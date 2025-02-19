@@ -1,3 +1,5 @@
+from django.forms import ModelForm
+
 from catalog.models import Product, Contact
 from django.core.exceptions import ValidationError
 from django import forms
@@ -110,3 +112,11 @@ class ContactForm(forms.ModelForm):
             if word in name.lower():
                 raise ValidationError(f'Имя содержит запрещенное слово: {word}')
         return cleaned_data
+
+
+class ModeratorProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = (
+            'publications_flag',
+        )
