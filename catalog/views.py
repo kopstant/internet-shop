@@ -38,17 +38,40 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
+        # Если пользователь - владелец, разрешаем полное редактирование
         if user == self.object.owner:
             return ProductForm
+
+        # Если пользователь - модератор, разрешаем редактирование только для флага публикации.
         if user.has_perm('catalog.can_unpublish_product') and user.has_perm('catalog.delete_product'):
             return ModeratorProductForm
+
+        # Во всех остальных случаях запрещаем доступ.
         raise PermissionDenied
+
+    def form_valid(self, form):
+        user = self.request.user.user
+
+        # Проверка прав на отмену публикации
+        if 'publications_flag' in form.changed_data and not user.has_perm('catalog.can_unpublish_product'):
+            raise PermissionDenied("У вас нет прав на отмену публикации продукта.")
+        return super().form_valid(form)
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
     permission_required = 'catalog.delete_product'
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        user = self.request.user
+
+        # Проверка прав на удаление продукта
+        if user != product.owner and not user.has_perm('catalog.delete_product'):
+            raise PermissionDenied("У вас нет прав на удаление этого продукта.")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ContactListView(LoginRequiredMixin, ListView):
