@@ -1,9 +1,5 @@
-from itertools import product
-
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect
-
+from django.shortcuts import redirect, get_object_or_404
 from catalog.forms import ProductForm, ContactForm, ModeratorProductForm
 from catalog.models import Product, Contact
 from django.urls import reverse_lazy
@@ -13,6 +9,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
+
+    def get_queryset(self):
+        user = self.request.user
+        #   Если пользователь аутентифицирован и имеет право на управление продуктами
+        if user.is_authenticated and user.has_perm('catalog.can_unpublish_product'):
+            return Product.objects.all()  # Показывает все продукты
+        #   Если пользователь аутентифицирован, но не имеет прав на управление продуктами
+        elif user.is_authenticated:
+            return Product.objects.filter(publications_flag=True)  # Только опубликованные продукты
+        #   Для неаутентифицированных пользователей
+        else:
+            return Product.objects.filter(publications_flag=True)
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -34,7 +42,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
-    permission_required = 'catalog.change_product'
 
     def get_form_class(self):
         user = self.request.user
@@ -53,21 +60,24 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         user = self.request.user
+        product = self.get_object()
 
         # Проверка прав на отмену публикации
         if 'publications_flag' in form.changed_data and not user.has_perm('catalog.can_unpublish_product'):
             raise PermissionDenied("У вас нет прав на отмену публикации продукта.")
-        return super().form_valid(form)
+
+        product.publications_flag = form.cleaned_data['publications_flag']
+        product.save()
+        return redirect(reverse_lazy('catalog:product_list'))
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
-    permission_required = 'catalog.delete_product'
 
     def dispatch(self, request, *args, **kwargs):
-        product = self.get_object()
-        user = self.request.user
+        product = get_object_or_404(Product, pk=self.kwargs['pk'])
+        user = request.user
 
         # Проверка прав на удаление продукта
         if user != product.owner and not user.has_perm('catalog.delete_product'):
