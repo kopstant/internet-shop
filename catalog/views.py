@@ -12,15 +12,9 @@ class ProductListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        #   Если пользователь аутентифицирован и имеет право на управление продуктами
         if user.is_authenticated and user.has_perm('catalog.can_unpublish_product'):
             return Product.objects.all()  # Показывает все продукты
-        #   Если пользователь аутентифицирован, но не имеет прав на управление продуктами
-        elif user.is_authenticated:
-            return Product.objects.filter(publications_flag=True)  # Только опубликованные продукты
-        #   Для неаутентифицированных пользователей
-        else:
-            return Product.objects.filter(publications_flag=True)
+        return Product.objects.filter(publications_flag=True)
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -31,7 +25,6 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
-    permission_required = 'catalog.add_product'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -51,9 +44,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         if user == product.owner:
             return ProductForm
 
-        # Если пользователь - модератор, разрешаем редактирование только для флага публикации.
         if user.has_perm('catalog.can_unpublish_product') and user.has_perm('catalog.delete_product'):
-            return ModeratorProductForm
+            if not user.groups.filter(name='manager_products').exists():
+                raise PermissionDenied("Вы не состоите в группе модераторов.")
+            return ModeratorProductForm  # Модератор может редактировать только флаг публикации
 
         # Во всех остальных случаях запрещаем доступ.
         raise PermissionDenied
@@ -80,7 +74,9 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         user = request.user
 
         # Проверка прав на удаление продукта
-        if user != product.owner and not user.has_perm('catalog.delete_product'):
+        if user != product.owner:
+            if user.has_perm('catalog.delete_product') and user.groups.filter(name='manager_products').exists():
+                return super().dispatch(request, *args, **kwargs)
             raise PermissionDenied("У вас нет прав на удаление этого продукта.")
 
         return super().dispatch(request, *args, **kwargs)
