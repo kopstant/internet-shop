@@ -38,8 +38,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
+        product = self.get_object()
+
         # Если пользователь - владелец, разрешаем полное редактирование
-        if user == self.object.owner:
+        if user == product.owner:
             return ProductForm
 
         # Если пользователь - модератор, разрешаем редактирование только для флага публикации.
