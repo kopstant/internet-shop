@@ -50,7 +50,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         raise PermissionDenied
 
     def form_valid(self, form):
-        user = self.request.user.user
+        user = self.request.user
 
         # Проверка прав на отмену публикации
         if 'publications_flag' in form.changed_data and not user.has_perm('catalog.can_unpublish_product'):
