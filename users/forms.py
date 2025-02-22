@@ -11,7 +11,30 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'username', 'first_name', 'last_name', 'phone_number', 'avatar', 'country', 'password1', 'password2')
+        fields = (
+            'email', 'username', 'first_name', 'last_name', 'phone_number', 'avatar', 'country', 'password1',
+            'password2')
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите ваш e-mail'})
+        self.fields['username'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите ваш логин'})
+        self.fields['first_name'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите ваше имя'})
+        self.fields['last_name'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите вашу фамилию'})
+        self.fields['phone_number'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите ваш номер телефона'})
+        self.fields['avatar'].widget.attrs.update(
+            {'class': 'avatar', 'placeholder': 'Выберите изображение для вашего профиля'})
+        self.fields['country'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите вашу страну'})
+        self.fields['password1'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите пароль'})
+        self.fields['password2'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Подтвердите пароль'})
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
