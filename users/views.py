@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from .forms import CustomUserCreationForm
+from .models import CustomUser
 
 
 class RegisterView(FormView):

@@ -1,3 +1,5 @@
+from django.forms import ModelForm
+
 from catalog.models import Product, Contact
 from django.core.exceptions import ValidationError
 from django import forms
@@ -14,6 +16,7 @@ class ProductForm(forms.ModelForm):
             'price',
             'created_at',
             'updated_at',
+            'publications_flag',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -27,6 +30,7 @@ class ProductForm(forms.ModelForm):
             {'class': 'form-control', 'placeholder': 'Введите дату создания продукта в формате "year-month-day"'})
         self.fields['updated_at'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Введите дату обновления продукта в формате "year-month-day"'})
+        self.fields['publications_flag'].widget.attrs.update({'class': 'form-group'})
 
     def clean_price(self):
         price = self.cleaned_data.get('price')
@@ -108,3 +112,11 @@ class ContactForm(forms.ModelForm):
             if word in name.lower():
                 raise ValidationError(f'Имя содержит запрещенное слово: {word}')
         return cleaned_data
+
+
+class ModeratorProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = (
+            'publications_flag',
+        )
