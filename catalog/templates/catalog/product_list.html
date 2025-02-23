@@ -15,6 +15,8 @@
                         <div class="card-header">
                             {{ product.product_name }}
                         </div>
+                        <a href="{% url 'catalog:category_product_list' product.category.id %}" class="btn btn-primary">Список
+                            продуктов в категории</a>
                         <div class="card-body">
                             <p class="card-img"><img src="{{ product.preview.url }}" alt="{{ product.product_name }}">
                             </p>
